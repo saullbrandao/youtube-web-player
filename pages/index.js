@@ -29,7 +29,7 @@ const VideoSearch = ({ handleSearch }) => {
   )
 }
 
-const Sidebar = ({ videos }) => {
+const Sidebar = ({ videos, handleVideoSelect, selected }) => {
   return (
     <Flex
       marginLeft={4}
@@ -38,22 +38,31 @@ const Sidebar = ({ videos }) => {
       alignItems='stretch'
       flex={1}
     >
-      {videos && videos.map(video => {
+      {videos && videos.map((video, index) => {
+        const isSelected = selected === index
         return (
           <Flex
             key={video.id}
             justifyContent='space-evenly'
             alignItems='center'
-            paddingBottom={4}
-            borderBottom='1px solid #DEDEDF'
+            background={`${isSelected && 'blue.400'}`}
+            color={isSelected ? 'white' : 'black'}
+            border='1px solid #DEDEDF'
+            onClick={() => handleVideoSelect(index)}
           >
             <Image
               src={video.thumbnails.high.url}
               width='160px'
               height='90px'
-              flex={1}
+            // flex={1}
             />
-            <Text flex={2} size='1px' marginLeft={2}>{video.title}</Text>
+            <Text
+              overflow='hidden'
+              flex={2} size='1px'
+              marginLeft={2}
+            >
+              {video.title}
+            </Text>
           </Flex>
         )
       })}
@@ -71,9 +80,10 @@ const VideoDescription = ({ title, description }) => {
       borderRadius='4px'
       marginTop={4}
       padding={2}
+      height={40}
     >
-      <Heading p={2} marginBottom={2} size='lg'>{title}</Heading>
-      <Text p={2} marginBottom={2}>{description}</Text>
+      <Heading p={2} marginBottom={2} size='md'>{title}</Heading>
+      <Text alignContent='center' p={2} fontSize={14} >{description}</Text>
     </Box>
   )
 }
@@ -95,29 +105,46 @@ const VideoPlayer = ({ videoInfo }) => {
 
 export default function Home() {
   const [keyword, setKeyword] = useState('beatles')
+  const [data, setData] = useState()
+  const [selected, setSelected] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
-    refetch()
+    handleSearch()
   }, [keyword])
 
   const handleSearch = async () => {
-    return await axios({
-      method: 'get',
-      url: '/api/search',
-      params: {
-        keyword: keyword
+    try {
+      const response = await axios({
+        method: 'get',
+        url: '/api/search',
+        params: {
+          keyword: keyword
+        }
+      })
+      console.log(response)
+      if (response.status === 200) {
+        setData(response.data)
+        setIsLoading(false)
+        setError(false)
       }
-    })
+    } catch (error) {
+      setError(true)
+    }
   }
 
-  const { isLoading, error, data, refetch } = useQuery('videos', handleSearch)
+  const handleVideoSelect = (index) => {
+    setSelected(index)
+  }
+
   return (
     <Container centerContent maxWidth='120ch' height='100%'>
       <VideoSearch handleSearch={(text) => setKeyword(text)} />
-      {isLoading ? <Spinner /> :
+      {isLoading && !data ? <Spinner /> :
         <Flex marginTop={4} width='100%'>
-          <VideoPlayer videoInfo={data?.data.currentPage[0]} />
-          <Sidebar videos={data?.data.currentPage.slice(1,)} />
+          <VideoPlayer videoInfo={data?.currentPage[selected]} />
+          <Sidebar videos={data?.currentPage} handleVideoSelect={handleVideoSelect} selected={selected} />
         </Flex>
       }
     </Container >
