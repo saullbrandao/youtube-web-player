@@ -1,5 +1,8 @@
 module.exports = {
   images: {
-    domains: ['images.unsplash.com']
+    domains: [
+      'i.ytimg.com',
+      'yt3.ggpht.com'
+    ]
   }
 }

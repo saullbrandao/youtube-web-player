@@ -1,112 +1,125 @@
-import { AspectRatio, Box, Container, Flex, Heading, Input, Text } from "@chakra-ui/react";
+import { AspectRatio, Box, Button, Container, Flex, Heading, Input, Spinner, Text } from "@chakra-ui/react";
+import axios from "axios";
 import Image from 'next/image'
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+
+const VideoSearch = ({ handleSearch }) => {
+  const handleKeyPress = event => {
+    if (event.key === 'Enter' && event.target.value) {
+      handleSearch(event.target.value)
+    }
+  }
+  return (
+    <Flex
+      width='100%'
+      border='1px solid #DEDEDF'
+      borderRadius='4px'
+      flexDirection='column'
+      padding={3}
+      shadow='md'
+    >
+      <label>Video Search</label>
+      <Input
+        size='sm'
+        marginTop={2}
+        onKeyPress={handleKeyPress}
+      />
+    </Flex>
+  )
+}
+
+const Sidebar = ({ videos }) => {
+  return (
+    <Flex
+      marginLeft={4}
+      flexDirection='column'
+      justifyContent='space-between'
+      alignItems='stretch'
+      flex={1}
+    >
+      {videos && videos.map(video => {
+        return (
+          <Flex
+            key={video.id}
+            justifyContent='space-evenly'
+            alignItems='center'
+            paddingBottom={4}
+            borderBottom='1px solid #DEDEDF'
+          >
+            <Image
+              src={video.thumbnails.high.url}
+              width='160px'
+              height='90px'
+              flex={1}
+            />
+            <Text flex={2} size='1px' marginLeft={2}>{video.title}</Text>
+          </Flex>
+        )
+      })}
+
+
+
+    </Flex>
+  )
+}
+
+const VideoDescription = ({ title, description }) => {
+  return (
+    <Box
+      border='1px solid #DEDEDF'
+      borderRadius='4px'
+      marginTop={4}
+      padding={2}
+    >
+      <Heading p={2} marginBottom={2} size='lg'>{title}</Heading>
+      <Text p={2} marginBottom={2}>{description}</Text>
+    </Box>
+  )
+}
+
+
+const VideoPlayer = ({ videoInfo }) => {
+  return (
+    <Box flex={2}>
+      <AspectRatio maxWidth='1600px' ratio={16 / 9}>
+        <iframe
+          src={`https://www.youtube.com/embed/${videoInfo?.id}`}
+        />
+      </AspectRatio>
+      <VideoDescription title={videoInfo?.title} description={videoInfo?.description} />
+    </Box>
+
+  )
+}
 
 export default function Home() {
+  const [keyword, setKeyword] = useState('beatles')
+
+  useEffect(() => {
+    refetch()
+  }, [keyword])
+
+  const handleSearch = async () => {
+    return await axios({
+      method: 'get',
+      url: '/api/search',
+      params: {
+        keyword: keyword
+      }
+    })
+  }
+
+  const { isLoading, error, data, refetch } = useQuery('videos', handleSearch)
   return (
     <Container centerContent maxWidth='120ch' height='100%'>
-      <Flex
-        width='100%'
-        border='1px solid #DEDEDF'
-        borderRadius='4px'
-        flexDirection='column'
-        padding={3}
-        shadow='md'
-
-      >
-
-        <label>Video Search</label>
-        <Input size='sm' marginTop={2} />
-      </Flex>
-      <Flex marginTop={4} width='100%'>
-        <Box flex={2}>
-          <AspectRatio maxWidth='1600px' ratio={16 / 9}>
-            <iframe
-              src='https://www.youtube.com/embed/NCtzkaL2t_Y'
-            />
-          </AspectRatio>
-          <Box
-            border='1px solid #DEDEDF'
-            borderRadius='4px'
-            shadow='md'
-            marginTop={4}
-            padding={2}
-          >
-            <Heading p={2} marginBottom={2} size='lg'>Video Title</Heading>
-            <Text p={2} marginBottom={2}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis officia illum repellendus minus dicta laboriosam at reiciendis adipisci totam quas error maxime dolorem vero, quo, nam fugit nulla? Veritatis, quaerat?</Text>
-          </Box>
-        </Box>
-
-        <Flex
-          marginLeft={4}
-          flexDirection='column'
-          justifyContent='space-between'
-          alignItems='stretch'
-          flex={1}
-        >
-          <Flex
-            justifyContent='space-between'
-            alignItems='center'
-            paddingBottom={4}
-          >
-            <Image
-              src='https://images.unsplash.com/photo-1619579719466-03d5847f92ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
-              width='450px'
-              height='280px'
-            />
-            <Heading size='xs' marginLeft={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eligendi!</Heading>
-          </Flex>
-          <Flex
-            justifyContent='space-between'
-            alignItems='center'
-            paddingBottom={4}
-          >
-            <Image
-              src='https://images.unsplash.com/photo-1619579719466-03d5847f92ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
-              width='450px'
-              height='280px'
-            />
-            <Heading size='xs' marginLeft={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eligendi!</Heading>
-          </Flex>
-          <Flex
-            justifyContent='space-between'
-            alignItems='center'
-            paddingBottom={4}
-          >
-            <Image
-              src='https://images.unsplash.com/photo-1619579719466-03d5847f92ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
-              width='450px'
-              height='280px'
-            />
-            <Heading size='xs' marginLeft={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eligendi!</Heading>
-          </Flex>
-          <Flex
-            justifyContent='space-between'
-            alignItems='center'
-            paddingBottom={4}
-          >
-            <Image
-              src='https://images.unsplash.com/photo-1619579719466-03d5847f92ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
-              width='450px'
-              height='280px'
-            />
-            <Heading size='xs' marginLeft={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eligendi!</Heading>
-          </Flex>
-          <Flex
-            justifyContent='space-between'
-            alignItems='center'
-            paddingBottom={4}
-          >
-            <Image
-              src='https://images.unsplash.com/photo-1619579719466-03d5847f92ba?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
-              width='450px'
-              height='280px'
-            />
-            <Heading size='xs' marginLeft={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, eligendi!</Heading>
-          </Flex>
-
+      <VideoSearch handleSearch={(text) => setKeyword(text)} />
+      {isLoading ? <Spinner /> :
+        <Flex marginTop={4} width='100%'>
+          <VideoPlayer videoInfo={data?.data.currentPage[0]} />
+          <Sidebar videos={data?.data.currentPage.slice(1,)} />
         </Flex>
-
-      </Flex>
+      }
     </Container >
   )
 }
