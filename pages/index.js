@@ -1,8 +1,6 @@
-import { AspectRatio, Box, Button, Container, Flex, Heading, Input, Spinner, Text } from "@chakra-ui/react";
 import axios from "axios";
 import Image from 'next/image'
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 
 const VideoSearch = ({ handleSearch }) => {
   const handleKeyPress = event => {
@@ -11,94 +9,84 @@ const VideoSearch = ({ handleSearch }) => {
     }
   }
   return (
-    <Flex
-      width='100%'
-      border='1px solid #DEDEDF'
-      borderRadius='4px'
-      flexDirection='column'
-      padding={3}
-      shadow='md'
+    <div
+      className='container border-solid border border-gray-200 rounded-sm flex flex-col p-3 shadow-md '
     >
       <label>Video Search</label>
-      <Input
-        size='sm'
-        marginTop={2}
+      <input
+        type='text'
+        className='mt-2 outline-none border-solid border-2 rounded-sm border-gray-200 focus:border-gray-400 p-1'
         onKeyPress={handleKeyPress}
       />
-    </Flex>
+    </div>
   )
 }
 
 const Sidebar = ({ videos, handleVideoSelect, selected }) => {
   return (
-    <Flex
-      marginLeft={4}
-      flexDirection='column'
-      justifyContent='space-between'
-      alignItems='stretch'
-      flex={1}
+    <div
+      className='ml-2 flex flex-col w-1/3'
     >
       {videos && videos.map((video, index) => {
         const isSelected = selected === index
+
         return (
-          <Flex
+          <div
             key={video.id}
-            justifyContent='space-evenly'
-            alignItems='center'
-            background={`${isSelected && 'blue.400'}`}
-            color={isSelected ? 'white' : 'black'}
-            border='1px solid #DEDEDF'
             onClick={() => handleVideoSelect(index)}
+            className={`container mb-2 flex items-center justify-evenly border border-solid border-gray-200 shadow-md ${isSelected && 'bg-blue-400 text-white'}`}
           >
             <Image
-              src={video.thumbnails.high.url}
+              className=''
+              src={video.thumbnails.default.url}
               width='160px'
               height='90px'
-            // flex={1}
             />
-            <Text
-              overflow='hidden'
-              flex={2} size='1px'
-              marginLeft={2}
+            <h3
+              className='overflow-hidden overflow-ellipsis whitespace-nowrap flex-1 ml-2 pr-2'
             >
               {video.title}
-            </Text>
-          </Flex>
+            </h3>
+          </div>
         )
       })}
 
 
 
-    </Flex>
+    </div>
   )
 }
 
 const VideoDescription = ({ title, description }) => {
   return (
-    <Box
+    <div
+      className='mt-4 p-2 h-40 border border-solid border-gray-200 rounded-sm shadow-md'
       border='1px solid #DEDEDF'
       borderRadius='4px'
       marginTop={4}
       padding={2}
       height={40}
     >
-      <Heading p={2} marginBottom={2} size='md'>{title}</Heading>
-      <Text alignContent='center' p={2} fontSize={14} >{description}</Text>
-    </Box>
+      <h2 className='p-2 mb-2 text-xl font-bold'>{title}</h2>
+      <p className='p-2'>{description}</p>
+    </div>
   )
 }
 
 
 const VideoPlayer = ({ videoInfo }) => {
   return (
-    <Box flex={2}>
-      <AspectRatio maxWidth='1600px' ratio={16 / 9}>
+    <div className='w-2/3'>
+      <div className='aspect-w-16 aspect-h-9'>
         <iframe
           src={`https://www.youtube.com/embed/${videoInfo?.id}`}
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
         />
-      </AspectRatio>
+      </div>
       <VideoDescription title={videoInfo?.title} description={videoInfo?.description} />
-    </Box>
+    </div>
 
   )
 }
@@ -139,14 +127,14 @@ export default function Home() {
   }
 
   return (
-    <Container centerContent maxWidth='120ch' height='100%'>
+    <div className='container mx-auto'>
       <VideoSearch handleSearch={(text) => setKeyword(text)} />
-      {isLoading && !data ? <Spinner /> :
-        <Flex marginTop={4} width='100%'>
+      {isLoading && !data ? <p>Loading...</p> :
+        <div className='flex mt-4 w-full justify-between'>
           <VideoPlayer videoInfo={data?.currentPage[selected]} />
           <Sidebar videos={data?.currentPage} handleVideoSelect={handleVideoSelect} selected={selected} />
-        </Flex>
+        </div>
       }
-    </Container >
+    </div >
   )
 }
