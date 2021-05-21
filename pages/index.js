@@ -10,7 +10,7 @@ const VideoSearch = ({ handleSearch }) => {
   }
   return (
     <div
-      className='container border-solid border border-gray-200 rounded-sm flex flex-col p-3 shadow-md '
+      className='container border-solid border border-gray-200 rounded-sm flex flex-col p-2 shadow-md '
     >
       <label>Video Search</label>
       <input
@@ -25,7 +25,7 @@ const VideoSearch = ({ handleSearch }) => {
 const Sidebar = ({ videos, handleVideoSelect, selected }) => {
   return (
     <div
-      className='ml-2 flex flex-col w-1/3'
+      className='flex flex-col w-full lg:w-1/3 lg:ml-2'
     >
       {videos && videos.map((video, index) => {
         const isSelected = selected === index
@@ -43,7 +43,7 @@ const Sidebar = ({ videos, handleVideoSelect, selected }) => {
               height='90px'
             />
             <h3
-              className='overflow-hidden overflow-ellipsis whitespace-nowrap flex-1 ml-2 pr-2'
+              className='overflow-hidden overflow-ellipsis  flex-1 ml-2 pr-2'
             >
               {video.title}
             </h3>
@@ -60,15 +60,10 @@ const Sidebar = ({ videos, handleVideoSelect, selected }) => {
 const VideoDescription = ({ title, description }) => {
   return (
     <div
-      className='mt-4 p-2 h-40 border border-solid border-gray-200 rounded-sm shadow-md'
-      border='1px solid #DEDEDF'
-      borderRadius='4px'
-      marginTop={4}
-      padding={2}
-      height={40}
+      className='mt-2 mb-2 p-2 h-auto border border-solid border-gray-200 rounded-sm shadow-md'
     >
-      <h2 className='p-2 mb-2 text-xl font-bold'>{title}</h2>
-      <p className='p-2'>{description}</p>
+      <h2 className='p-1 mb-1 text-base font-bold break-all'>{title}</h2>
+      <p className='p-1 text-justify text-sm'>{description}</p>
     </div>
   )
 }
@@ -76,11 +71,11 @@ const VideoDescription = ({ title, description }) => {
 
 const VideoPlayer = ({ videoInfo }) => {
   return (
-    <div className='w-2/3'>
+    <div className='w-full lg:w-2/3'>
       <div className='aspect-w-16 aspect-h-9'>
         <iframe
           src={`https://www.youtube.com/embed/${videoInfo?.id}`}
-          frameborder="0"
+          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         />
@@ -111,7 +106,6 @@ export default function Home() {
           keyword: keyword
         }
       })
-      console.log(response)
       if (response.status === 200) {
         setData(response.data)
         setIsLoading(false)
@@ -129,8 +123,8 @@ export default function Home() {
   return (
     <div className='container mx-auto'>
       <VideoSearch handleSearch={(text) => setKeyword(text)} />
-      {isLoading && !data ? <p>Loading...</p> :
-        <div className='flex mt-4 w-full justify-between'>
+      {isLoading && !data ? <p className='text-center'>Loading...</p> :
+        <div className='flex flex-col lg:flex-row mt-4 w-full justify-between'>
           <VideoPlayer videoInfo={data?.currentPage[selected]} />
           <Sidebar videos={data?.currentPage} handleVideoSelect={handleVideoSelect} selected={selected} />
         </div>
