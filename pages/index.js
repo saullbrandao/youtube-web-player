@@ -10,12 +10,12 @@ const VideoSearch = ({ handleSearch }) => {
   }
   return (
     <div
-      className='container border-solid border border-gray-200 rounded-sm flex flex-col p-2 shadow-md '
+      className='container border-solid border border-gray-200 dark:border-gray-700 rounded-sm flex flex-col p-2 shadow-md'
     >
       <label>Video Search</label>
       <input
         type='text'
-        className='mt-2 outline-none border-solid border-2 rounded-sm border-gray-200 focus:border-gray-400 p-1'
+        className='mt-2 outline-none border-solid border-2 rounded-sm border-gray-200 focus:border-gray-400 dark:focus:border-blue-300 p-1'
         onKeyPress={handleKeyPress}
       />
     </div>
@@ -34,7 +34,7 @@ const Sidebar = ({ videos, handleVideoSelect, selected }) => {
           <div
             key={video.id}
             onClick={() => handleVideoSelect(index)}
-            className={`container mb-2 flex items-center justify-evenly border border-solid border-gray-200 shadow-md ${isSelected && 'bg-blue-400 text-white'}`}
+            className={`container mb-2 flex items-center justify-evenly border border-solid border-gray-200 dark:border-gray-700 shadow-md ${isSelected && 'bg-blue-400 text-white'}`}
           >
             <Image
               className=''
@@ -60,7 +60,7 @@ const Sidebar = ({ videos, handleVideoSelect, selected }) => {
 const VideoDescription = ({ title, description }) => {
   return (
     <div
-      className='mt-2 mb-2 p-2 h-auto border border-solid border-gray-200 rounded-sm shadow-md'
+      className='mt-2 mb-2 p-2 h-auto border border-solid border-gray-200 dark:border-gray-700 rounded-sm shadow-md'
     >
       <h2 className='p-1 mb-1 text-base font-bold break-all'>{title}</h2>
       <p className='p-1 text-justify text-sm'>{description}</p>
@@ -121,7 +121,7 @@ export default function Home() {
   }
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto dark:text-white'>
       <VideoSearch handleSearch={(text) => setKeyword(text)} />
       {isLoading && !data ? <p className='text-center'>Loading...</p> :
         <div className='flex flex-col lg:flex-row mt-4 w-full justify-between'>

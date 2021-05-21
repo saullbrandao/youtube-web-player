@@ -4,7 +4,7 @@ const searcher = new YTSearcher({
   key: process.env.YOUTUBE_API_KEY
 })
 
-const result = {
+const local = {
   currentPage: [
     {
       kind: 'youtube#video',
@@ -89,13 +89,15 @@ const result = {
 
 export default async (req, res) => {
 
-  // const result = await searcher.search(req.query.keyword || 'beatles', {
-  //   type: 'video',
-  //   maxResults: 6,
-  // })
+  const result = await searcher.search(req.query.keyword || 'beatles', {
+    type: 'video',
+    maxResults: 7,
+  })
 
-  console.log('api call')
-  res.status(200).json(JSON.stringify(result))
+
+  // res.status(200).json(result)
+
+  res.status(200).json(JSON.stringify(local))
 
 }
 
