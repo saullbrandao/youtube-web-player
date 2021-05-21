@@ -1,7 +1,7 @@
 const VideoDescription = ({ title, description }) => {
   return (
     <div
-      className='mt-2 mb-2 p-2 h-full border border-solid border-gray-200 dark:border-gray-700 rounded-sm shadow-md'
+      className='mt-2 mb-2 p-2 h-auto border border-solid border-gray-200 dark:border-gray-700 rounded-sm shadow-md'
     >
       <h2 className='p-1 mb-1 text-base font-bold break-all'>{title}</h2>
       <p className='p-1 text-justify text-sm'>{description}</p>
