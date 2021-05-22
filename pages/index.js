@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Sidebar } from "../components/Sidebar";
 import { VideoPlayer } from "../components/VideoPlayer";
 import { SearchBar } from '../components/SearchBar'
+import { ThemeToggle } from "../components/ThemeToggle";
 
 export default function Home() {
   const [keyword, setKeyword] = useState('beatles')
@@ -40,7 +41,10 @@ export default function Home() {
 
   return (
     <div className='container mx-auto dark:text-white'>
-      <SearchBar handleSearch={(text) => setKeyword(text)} />
+      <div className='flex border-solid border border-gray-200 dark:border-gray-700 rounded-sm p-2 mt-2 shadow-md'>
+        <SearchBar handleSearch={(text) => setKeyword(text)} />
+        <ThemeToggle />
+      </div>
       {isLoading && !data ? <p className='text-center'>Loading...</p> :
         <div className='flex flex-col lg:flex-row mt-4 w-full justify-between'>
           <VideoPlayer videoInfo={data?.currentPage[selected]} />
@@ -54,3 +58,4 @@ export default function Home() {
     </div >
   )
 }
+

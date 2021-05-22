@@ -1,4 +1,4 @@
-import { YTSearcher, validOptions } from 'ytsearcher'
+import { YTSearcher } from 'ytsearcher'
 
 const searcher = new YTSearcher({
   key: process.env.YOUTUBE_API_KEY
