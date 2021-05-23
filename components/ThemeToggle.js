@@ -1,4 +1,4 @@
-import { IoSunnyOutline, IoMoonOutline } from 'react-icons/io5';
+import { IoSunnyOutline, IoMoon } from 'react-icons/io5';
 import { useState, useEffect } from 'react'
 
 export const ThemeToggle = () => {
@@ -19,12 +19,12 @@ export const ThemeToggle = () => {
 
   }, [darkMode])
   return (
-    <div className="transition duration-500 ease-in-out rounded-full p-2" onClick={() => setDarkMode(!darkMode)}>
+    <button className="flex-2 ml-2 rounded-sm pl-3 pr-3 transition duration-300 ease-out focus:outline-none hover:bg-gray-300 dark:hover:bg-gray-700" onClick={() => setDarkMode(!darkMode)}>
       {darkMode ? (
-        <IoMoonOutline />
+        <IoMoon />
       ) : (
         <IoSunnyOutline />
       )}
-    </div>
+    </button>
   )
 }

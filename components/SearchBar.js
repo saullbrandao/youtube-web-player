@@ -8,7 +8,7 @@ export const SearchBar = ({ handleSearch }) => {
     <input
       type='text'
       placeholder='Search'
-      className='flex-1 outline-none border-solid border-2 rounded-sm border-gray-200 focus:border-gray-400 dark:border-gray-700 dark:bg-gray-900 p-1'
+      className='outline-none flex-1 border-solid border-2 rounded-sm border-gray-200 focus:border-gray-400 dark:border-gray-700 dark:bg-gray-900 p-1'
       onKeyPress={handleKeyPress}
     />
   )

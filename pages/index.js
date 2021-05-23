@@ -41,7 +41,7 @@ export default function Home() {
 
   return (
     <div className='container mx-auto dark:text-white'>
-      <div className='flex border-solid border border-gray-200 dark:border-gray-700 rounded-sm p-2 mt-2 shadow-md'>
+      <div className='flex justify-between border-solid border border-gray-200 dark:border-gray-700 rounded-sm p-2 mt-2 shadow-md'>
         <SearchBar handleSearch={(text) => setKeyword(text)} />
         <ThemeToggle />
       </div>
